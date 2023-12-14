@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewService {
-    @Autowired
-    private ReviewRepository reviewRepository;
 
-    public ReviewService() {
+    private final ReviewRepository reviewRepository;
+
+    @Autowired
+    public ReviewService(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
     }
 
     public Iterable<Review> getAllReviews() {
@@ -24,19 +26,19 @@ public class ReviewService {
     }
 
     public Review addReview(Review review) {
-        return (Review)this.reviewRepository.save(review);
+        return this.reviewRepository.save(review);
     }
 
     public ResponseEntity<Review> updateReview(Long id, Review updatedReview) {
         Optional<Review> existingReviewOptional = this.reviewRepository.findById(id);
         if (existingReviewOptional.isPresent()) {
-            Review existingReview = (Review)existingReviewOptional.get();
+            Review existingReview = existingReviewOptional.get();
             existingReview.setDate(updatedReview.getDate());
             existingReview.setReview(updatedReview.getReview());
             existingReview.setDescription(updatedReview.getDescription());
             existingReview.setClient(updatedReview.getClient());
             existingReview.setMovie(updatedReview.getMovie());
-            Review savedReview = (Review)this.reviewRepository.save(existingReview);
+            Review savedReview = this.reviewRepository.save(existingReview);
             return ResponseEntity.ok(savedReview);
         } else {
             return ResponseEntity.notFound().build();

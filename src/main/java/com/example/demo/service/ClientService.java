@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClientService {
-    @Autowired
-    private ClientRepository clientRepository;
 
-    public ClientService() {
+    private final ClientRepository clientRepository;
+
+    @Autowired
+    public ClientService(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
     }
 
     public Iterable<Client> getAllClients() {
@@ -24,17 +26,17 @@ public class ClientService {
     }
 
     public Client addClient(Client client) {
-        return (Client)this.clientRepository.save(client);
+        return this.clientRepository.save(client);
     }
 
     public ResponseEntity<Client> updateClient(Long id, Client updatedClient) {
         Optional<Client> existingClientOptional = this.clientRepository.findById(id);
         if (existingClientOptional.isPresent()) {
-            Client existingClient = (Client)existingClientOptional.get();
+            Client existingClient = existingClientOptional.get();
             existingClient.setFirstName(updatedClient.getFirstName());
             existingClient.setLastName(updatedClient.getLastName());
             existingClient.setEmail(updatedClient.getEmail());
-            Client savedClient = (Client)this.clientRepository.save(existingClient);
+            Client savedClient = this.clientRepository.save(existingClient);
             return ResponseEntity.ok(savedClient);
         } else {
             return ResponseEntity.notFound().build();

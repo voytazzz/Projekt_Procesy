@@ -19,8 +19,6 @@ public class ClientServiceTest {
     @InjectMocks
     private ClientService clientService;
 
-    public ClientServiceTest() {
-    }
 
     @BeforeEach
     public void setup() {

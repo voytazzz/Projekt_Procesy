@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MovieService {
-    @Autowired
-    private MovieRepository movieRepository;
 
-    public MovieService() {
+    private final MovieRepository movieRepository;
+
+    @Autowired
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
     public Iterable<Movie> getAllMovies() {
@@ -24,17 +26,17 @@ public class MovieService {
     }
 
     public Movie addMovie(Movie movie) {
-        return (Movie)this.movieRepository.save(movie);
+        return this.movieRepository.save(movie);
     }
 
     public ResponseEntity<Movie> updateMovie(Long id, Movie updatedMovie) {
         Optional<Movie> existingMovieOptional = this.movieRepository.findById(id);
         if (existingMovieOptional.isPresent()) {
-            Movie existingMovie = (Movie)existingMovieOptional.get();
+            Movie existingMovie = existingMovieOptional.get();
             existingMovie.setTitle(updatedMovie.getTitle());
             existingMovie.setDirector(updatedMovie.getDirector());
             existingMovie.setYear(updatedMovie.getYear());
-            Movie savedMovie = (Movie)this.movieRepository.save(existingMovie);
+            Movie savedMovie = this.movieRepository.save(existingMovie);
             return ResponseEntity.ok(savedMovie);
         } else {
             return ResponseEntity.notFound().build();
