@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+//Kod w klasie ClientService jest zgodny z zasadą SRP, ponieważ odpowiada za operacje
+// związane z encją Client. Ma jedno jasno zdefiniowane zadanie: obsługę klientów
+
 @Service
 public class ClientService {
 

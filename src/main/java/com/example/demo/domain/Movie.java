@@ -1,4 +1,5 @@
 package com.example.demo.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ public class Movie {
     private String title;
     private String director;
     private int year;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews;
 }
